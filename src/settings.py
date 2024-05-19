@@ -1,0 +1,4 @@
+DATA_DIR = "../data"
+STUDENT_ID = "<STUDENT_ID>"
+OUTPUT_VAR_FILE = f"{STUDENT_ID}_vars.txt"
+OUTPUT_PRED_FILE = f"{STUDENT_ID}_obs.txt"
