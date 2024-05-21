@@ -8,6 +8,7 @@ from src.train import cv
 
 
 def perform_experiments(X, y, experiment_configs, experiment_path="experiment_results"):
+    scores = {}
     for exp_config in experiment_configs:
         print(f"Experiment {exp_config.experiment_name} in progress...")
         exp_config.scores = cv(
@@ -21,6 +22,10 @@ def perform_experiments(X, y, experiment_configs, experiment_path="experiment_re
         )
         with open(os.path.join(experiment_path, pickle_name), "wb") as f:
             pickle.dump(exp_config, f)
+
+        scores[exp_config.experiment_name] = int(np.mean(exp_config.scores))
+
+    return scores
 
 
 def find_best_experiments(k=5, experiment_path="experiment_results"):
