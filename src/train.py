@@ -69,17 +69,16 @@ def calculate_score(model, X_train, X_test, y_train, y_test):
     return score
 
 
-def cv(X, y, model, k_folds, feature_selector: Optional["BaseFeatureSelector"] = None):
+def cv(X, y, experiment_config, k_folds):
     """
     Function performs cross validation with custom scoring function
 
     Arguments:
         X: numpy array with predictors
         y: numpy array with target variable
-        model: model used in cross-validation
+        experiment_config: dictionary with experiment config - model
+            and feature selector (if None, no feature selection is performed)
         k_folds: number of folds for cross-validation
-        feature_selector: feature selector instance used for feature selection
-            if None, no feature selection is performed
 
     Returns:
         scores: List of scores from custom metric for each cross-validation split
@@ -91,7 +90,14 @@ def cv(X, y, model, k_folds, feature_selector: Optional["BaseFeatureSelector"] =
         X_train, y_train = X[train_indices], y[train_indices]
         X_test, y_test = X[test_indices], y[test_indices]
 
+        model = experiment_config["model"](**experiment_config["model_config"])
+        feature_selector = experiment_config["feature_selector"]
+
         if feature_selector is not None:
+            feature_selector = feature_selector(
+                **experiment_config["feature_selector_config"]
+            )
+
             feature_selector.fit(X_train, y_train)
             X_train = feature_selector.transform(X_train)
             X_test = feature_selector.transform(X_test)
