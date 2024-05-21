@@ -1,11 +1,9 @@
 """Module for training utils including ."""
 
-from typing import TYPE_CHECKING, Optional
-
 import numpy as np
+import random
 
-if TYPE_CHECKING:
-    from src.feature_selector import BaseFeatureSelector
+from src.settings import SEED
 
 
 def prepare_cv_indices(n_observations, k_folds):
@@ -19,6 +17,8 @@ def prepare_cv_indices(n_observations, k_folds):
     Returns:
         splits: Training and testing indices
     """
+    np.random.seed(SEED)
+    random.seed(SEED)
     indices = np.arange(n_observations)
     np.random.shuffle(indices)
     fold_sizes = np.full(k_folds, n_observations // k_folds, dtype=int)
@@ -76,7 +76,7 @@ def cv(X, y, experiment_config, k_folds):
     Arguments:
         X: numpy array with predictors
         y: numpy array with target variable
-        experiment_config: dictionary with experiment config - model
+        experiment_config: dataclass instance with experiment config - model
             and feature selector (if None, no feature selection is performed)
         k_folds: number of folds for cross-validation
 
@@ -87,15 +87,19 @@ def cv(X, y, experiment_config, k_folds):
 
     scores = []
     for train_indices, test_indices in fold_indices:
+
+        np.random.seed(SEED)
+        random.seed(SEED)
+
         X_train, y_train = X[train_indices], y[train_indices]
         X_test, y_test = X[test_indices], y[test_indices]
 
-        model = experiment_config["model"](**experiment_config["model_config"])
-        feature_selector = experiment_config["feature_selector"]
+        model = experiment_config.classifier(**experiment_config.classifier_config)
+        feature_selector = experiment_config.feature_selector
 
         if feature_selector is not None:
             feature_selector = feature_selector(
-                **experiment_config["feature_selector_config"]
+                **experiment_config.feature_selector_config
             )
 
             feature_selector.fit(X_train, y_train)

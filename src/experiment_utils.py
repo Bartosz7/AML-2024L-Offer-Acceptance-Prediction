@@ -7,20 +7,20 @@ import pickle
 from src.train import cv
 
 
-def perform_experiments(X, y, experiment_dict, experiment_path="experiment_results"):
-    for exp_name, exp_config in experiment_dict.items():
-        print(f"Experiment {exp_name} in progress...")
-        experiment_dict[exp_name]["scores"] = cv(
+def perform_experiments(X, y, experiment_configs, experiment_path="experiment_results"):
+    for exp_config in experiment_configs:
+        print(f"Experiment {exp_config.experiment_name} in progress...")
+        exp_config.scores = cv(
             X=X,
             y=y,
             experiment_config=exp_config,
             k_folds=5,
         )
         pickle_name = (
-            exp_name + "_" + str(int(np.mean(experiment_dict[exp_name]["scores"])))
+            exp_config.experiment_name + "_" + str(int(np.mean(exp_config.scores)))
         )
         with open(os.path.join(experiment_path, pickle_name), "wb") as f:
-            pickle.dump(experiment_dict[exp_name], f)
+            pickle.dump(exp_config, f)
 
 
 def find_best_experiments(k=5, experiment_path="experiment_results"):
