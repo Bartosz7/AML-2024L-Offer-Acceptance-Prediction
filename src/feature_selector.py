@@ -23,16 +23,6 @@ class BaseFeatureSelector(ABC):
         pass
 
     @abstractmethod
-    def transform(self, X: np.ndarray) -> np.ndarray:
-        """
-        Transform the data using the feature selector model.
-
-        Arguments:
-            X: Array to transform.
-        """
-        pass
-
-    @abstractmethod
     def get_support(self, indices: bool = True) -> np.ndarray:
         """
         Get indices of the chosen features after the fit.
@@ -42,3 +32,12 @@ class BaseFeatureSelector(ABC):
 
         """
         pass
+
+    def transform(self, X: np.ndarray) -> np.ndarray:
+        """
+        Transform the data with feature selector.
+
+        Arguments:
+            X: Array to transform.
+        """
+        return X[:, self.get_support()]
