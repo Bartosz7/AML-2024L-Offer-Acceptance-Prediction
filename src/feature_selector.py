@@ -1,8 +1,6 @@
 """Module for feature selector classes."""
 
 from abc import ABC, abstractmethod
-from typing import Any
-
 import numpy as np
 
 
@@ -15,10 +13,32 @@ class BaseFeatureSelector(ABC):
 
     @abstractmethod
     def fit(self, X: np.ndarray, y: np.ndarray) -> None:
-        """Fit the feature selector model to the data. This method should be implemented by the child class."""
+        """
+        Fit the feature selector model to the data.
+
+        Arguments:
+            X: Array with training features.
+            y: Array with training target variable.
+        """
         pass
 
     @abstractmethod
     def transform(self, X: np.ndarray) -> np.ndarray:
-        """Transform the data using the feature selector model. This method should be implemented by the child class."""
+        """
+        Transform the data using the feature selector model.
+
+        Arguments:
+            X: Array to transform.
+        """
+        pass
+
+    @abstractmethod
+    def get_support(self, indices: bool = True) -> np.ndarray:
+        """
+        Get indices of the chosen features after the fit.
+
+        Arguments:
+            indices: If True, the return value will be an array of integers, rather than a boolean mask.
+
+        """
         pass

@@ -9,9 +9,10 @@ from src.train import cv
 
 def perform_experiments(X, y, experiment_configs, experiment_path="experiment_results"):
     scores = {}
+    indices = {}
     for exp_config in experiment_configs:
         print(f"Experiment {exp_config.experiment_name} in progress...")
-        exp_config.scores = cv(
+        exp_config.scores, exp_config.indices = cv(
             X=X,
             y=y,
             experiment_config=exp_config,
@@ -24,8 +25,9 @@ def perform_experiments(X, y, experiment_configs, experiment_path="experiment_re
             pickle.dump(exp_config, f)
 
         scores[exp_config.experiment_name] = int(np.mean(exp_config.scores))
+        indices[exp_config.experiment_name] = exp_config.indices
 
-    return scores
+    return scores, indices
 
 
 def find_best_experiments(k=5, experiment_path="experiment_results"):

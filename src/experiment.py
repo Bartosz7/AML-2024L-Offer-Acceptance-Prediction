@@ -3,6 +3,7 @@ from functools import cached_property
 from sklearn.base import ClassifierMixin
 from typing import Dict, Any, Callable, Optional, List
 import uuid
+import numpy as np
 
 
 class Experiment(BaseModel):
@@ -11,6 +12,7 @@ class Experiment(BaseModel):
     feature_selector: Callable
     feature_selector_config: Dict[str, Any] = {}
     scores: Optional[List[int]] = None
+    indices: Optional[List[np.ndarray]] = None
 
     @cached_property
     def experiment_name(self):

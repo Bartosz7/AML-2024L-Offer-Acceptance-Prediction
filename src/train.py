@@ -86,6 +86,7 @@ def cv(X, y, experiment_config, k_folds):
     fold_indices = prepare_cv_indices(n_observations=X.shape[0], k_folds=k_folds)
 
     scores = []
+    indices = []
     for train_indices, test_indices in fold_indices:
 
         np.random.seed(SEED)
@@ -107,5 +108,6 @@ def cv(X, y, experiment_config, k_folds):
             X_test = feature_selector.transform(X_test)
 
         scores.append(calculate_score(model, X_train, X_test, y_train, y_test))
+        indices.append(feature_selector.get_support(indices=True))
 
-    return scores
+    return scores, indices
