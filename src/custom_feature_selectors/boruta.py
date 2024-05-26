@@ -30,15 +30,19 @@ class Boruta(BaseFeatureSelector):
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> None:
         self.boruta_feat_selector.fit(X, y)
-        X_reduced = self.boruta_feat_selector.transform(X)
 
         if self.additional_feat_selector:
+            X_reduced = self.boruta_feat_selector.transform(X)
             self.additional_feat_selector.fit(X_reduced, y)
-        else:
-            self.additional_feat_selector = self.boruta_feat_selector
 
     def get_support(self, indices: bool = True) -> np.ndarray:
         if indices:
-            return self.additional_feat_selector.get_support(indices=True)
+            if self.additional_feat_selector:
+                return self.additional_feat_selector.get_support(indices=True)
+            else:
+                return self.boruta_feat_selector.get_support(indices=True)
 
-        return self.additional_feat_selector.get_support()
+        if self.additional_feat_selector:
+            return self.additional_feat_selector.get_support()
+        else:
+            return self.boruta_feat_selector.get_support()
