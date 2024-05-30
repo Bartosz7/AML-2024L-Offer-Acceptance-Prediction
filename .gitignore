@@ -1,3 +1,6 @@
+experiment_results_old/*
+experiment_results_v2/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
