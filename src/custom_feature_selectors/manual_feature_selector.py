@@ -8,9 +8,9 @@ from src.feature_selector import BaseFeatureSelector
 class ManualFeatureSelector(BaseFeatureSelector):
     """Manual feature selector."""
 
-    def __init__(self, n_features, indices) -> None:
+    def __init__(self, indices) -> None:
         """Initialize the feature selector instance."""
-        self.n_features = n_features
+        self.n_features = len(indices)
         self.indices = indices
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> None:

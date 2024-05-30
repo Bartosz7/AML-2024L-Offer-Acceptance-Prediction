@@ -1,8 +1,9 @@
 """Module containing custom feature selectors based on feature importance."""
 
 import numpy as np
-from src.feature_selector import BaseFeatureSelector
 from sklearn.ensemble import RandomForestClassifier
+
+from src.feature_selector import BaseFeatureSelector
 
 
 class RandomForestFeatureImportanceSelector(BaseFeatureSelector):

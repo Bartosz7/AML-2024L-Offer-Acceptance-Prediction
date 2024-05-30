@@ -1,7 +1,8 @@
 """Module for training utils including ."""
 
-import numpy as np
 import random
+
+import numpy as np
 
 from src.settings import SEED
 
@@ -37,7 +38,7 @@ def prepare_cv_indices(n_observations, k_folds):
     return splits
 
 
-def calculate_score(model, X_train, X_test, y_train, y_test):
+def calculate_score(model, X_train, X_test, y_train, y_test, n_feats):
     """
     Function calculates custom score. It takes 1/5 observations from test set with highest
     probability of success and checks how many of them are truly 1. For each properly classified
@@ -50,6 +51,7 @@ def calculate_score(model, X_train, X_test, y_train, y_test):
         X_test: numpy array containing test predictors
         y_train: numpy array containing training target variable
         y_test: numpy array containing test target variable
+        n_feats: number of features used in the model
 
     Returns:
         score: custom score value for given data and model
@@ -59,7 +61,6 @@ def calculate_score(model, X_train, X_test, y_train, y_test):
     best_indices = np.argsort(proba_preds[:, 1])[-X_test.shape[0] // 5 :]
 
     properly_classfied_count = np.sum(y_test[best_indices])
-    n_feats = X_train.shape[1]
 
     print(
         f"Using {n_feats} features, we properly classified {properly_classfied_count}/{X_test.shape[0] // 5} clients."
@@ -107,7 +108,9 @@ def cv(X, y, experiment_config, k_folds):
             X_train = feature_selector.transform(X_train)
             X_test = feature_selector.transform(X_test)
 
-        scores.append(calculate_score(model, X_train, X_test, y_train, y_test))
+        n_feats = X_train.shape[1]
+
+        scores.append(calculate_score(model, X_train, X_test, y_train, y_test, n_feats))
         indices.append(feature_selector.get_support(indices=True))
 
     return scores, indices

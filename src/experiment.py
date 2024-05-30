@@ -1,8 +1,9 @@
-from pydantic import BaseModel
-from functools import cached_property
-from typing import Dict, Any, Callable, Optional, List
 import uuid
+from functools import cached_property
+from typing import Any, Callable, Dict, List, Optional
+
 import numpy as np
+from pydantic import BaseModel
 
 
 def sanitize_name(name: str) -> str:

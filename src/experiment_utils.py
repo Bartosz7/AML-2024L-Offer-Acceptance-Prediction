@@ -1,8 +1,9 @@
 """Module for experiment utils."""
 
-import numpy as np
 import os
 import pickle
+
+import numpy as np
 
 from src.train import cv
 

@@ -2,15 +2,14 @@
 
 from abc import ABC
 from typing import Literal, Union
+
 import numpy as np
 from sklearn.metrics import mutual_info_score as MI
 
+from src.custom_feature_selectors.mi_utils import (CMI,
+                                                   check_for_stopping_rule,
+                                                   interaction_gain)
 from src.feature_selector import BaseFeatureSelector
-from src.custom_feature_selectors.mi_utils import (
-    CMI,
-    check_for_stopping_rule,
-    interaction_gain,
-)
 
 
 class MIFeatureSelector(BaseFeatureSelector, ABC):

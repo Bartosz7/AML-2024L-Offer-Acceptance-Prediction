@@ -1,7 +1,8 @@
-from src.feature_selector import BaseFeatureSelector
-from sklearn.ensemble import RandomForestClassifier
-from boruta import BorutaPy
 import numpy as np
+from boruta import BorutaPy
+from sklearn.ensemble import RandomForestClassifier
+
+from src.feature_selector import BaseFeatureSelector
 
 
 class Boruta(BaseFeatureSelector):
