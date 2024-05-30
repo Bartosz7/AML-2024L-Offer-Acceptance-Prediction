@@ -17,7 +17,7 @@ def sanitize_name(name: str) -> str:
 class Experiment(BaseModel):
     classifier: Callable
     classifier_config: Dict[str, Any] = {}
-    feature_selector: Optional[Callable] = None
+    feature_selector: Callable
     feature_selector_config: Dict[str, Any] = {}
     scores: Optional[List[int]] = None
     indices: Optional[List[np.ndarray]] = None
