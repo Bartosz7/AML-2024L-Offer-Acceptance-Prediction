@@ -70,7 +70,7 @@ def calculate_score(model, X_train, X_test, y_train, y_test, n_feats):
     return score
 
 
-def cv(X, y, experiment_config, k_folds, split_indices=None):
+def cv(X, y, experiment_config, k_folds=5, split_indices=None):
     """
     Function performs cross validation with custom scoring function
 
@@ -87,7 +87,7 @@ def cv(X, y, experiment_config, k_folds, split_indices=None):
     np.random.seed(SEED)
     random.seed(SEED)
     # fold_indices = prepare_cv_indices(n_observations=X.shape[0], k_folds=k_folds)
-    skf = StratifiedKFold(n_splits=5, shuffle=True)
+    skf = StratifiedKFold(n_splits=k_folds, shuffle=True)
     fold_indices = skf.split(X, y)
 
     scores = []
