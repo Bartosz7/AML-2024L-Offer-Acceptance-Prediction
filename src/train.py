@@ -70,7 +70,7 @@ def calculate_score(model, X_train, X_test, y_train, y_test, n_feats):
     return score
 
 
-def cv(X, y, experiment_config, k_folds):
+def cv(X, y, experiment_config, k_folds, split_indices=None):
     """
     Function performs cross validation with custom scoring function
 
@@ -84,12 +84,15 @@ def cv(X, y, experiment_config, k_folds):
     Returns:
         scores: List of scores from custom metric for each cross-validation split
     """
+    np.random.seed(SEED)
+    random.seed(SEED)
     # fold_indices = prepare_cv_indices(n_observations=X.shape[0], k_folds=k_folds)
     skf = StratifiedKFold(n_splits=5, shuffle=True)
     fold_indices = skf.split(X, y)
 
     scores = []
     indices = []
+    fold_id = 0
     for train_indices, test_indices in fold_indices:
 
         np.random.seed(SEED)
@@ -99,17 +102,32 @@ def cv(X, y, experiment_config, k_folds):
         X_test, y_test = X[test_indices], y[test_indices]
 
         model = experiment_config.classifier(**experiment_config.classifier_config)
-        feature_selector = experiment_config.feature_selector
 
-        feature_selector = feature_selector(**experiment_config.feature_selector_config)
+        if split_indices is None:
+            feature_selector = experiment_config.feature_selector
+            feature_selector = feature_selector(
+                **experiment_config.feature_selector_config
+            )
 
-        feature_selector.fit(X_train, y_train)
-        X_train = feature_selector.transform(X_train)
-        X_test = feature_selector.transform(X_test)
+            feature_selector.fit(X_train, y_train)
+            X_train = feature_selector.transform(X_train)
+            X_test = feature_selector.transform(X_test)
+
+            indices.append(feature_selector.get_support(indices=True))
+
+        else:
+            X_train = X_train[:, split_indices[fold_id]]
+            X_test = X_test[:, split_indices[fold_id]]
+
+            indices.append(split_indices[fold_id])
 
         n_feats = X_train.shape[1]
 
+        np.random.seed(SEED)
+        random.seed(SEED)
+
         scores.append(calculate_score(model, X_train, X_test, y_train, y_test, n_feats))
-        indices.append(feature_selector.get_support(indices=True))
+
+        fold_id += 1
 
     return scores, indices

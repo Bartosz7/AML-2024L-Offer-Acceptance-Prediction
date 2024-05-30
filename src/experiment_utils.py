@@ -8,7 +8,9 @@ import numpy as np
 from src.train import cv
 
 
-def perform_experiments(X, y, experiment_configs, experiment_path="experiment_results"):
+def perform_experiments(
+    X, y, experiment_configs, experiment_path="experiment_results", split_indices=None
+):
     scores = {}
     indices = {}
     for exp_config in experiment_configs:
@@ -18,6 +20,7 @@ def perform_experiments(X, y, experiment_configs, experiment_path="experiment_re
             y=y,
             experiment_config=exp_config,
             k_folds=5,
+            split_indices=split_indices,
         )
         pickle_name = (
             exp_config.experiment_name + "_" + str(int(np.mean(exp_config.scores)))

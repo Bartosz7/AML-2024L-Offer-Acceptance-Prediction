@@ -5,7 +5,7 @@ from sklearn.inspection import permutation_importance
 
 
 class PermutationImportance(BaseFeatureSelector):
-    """Boruta based feature selector."""
+    """Permutation Importance feature selector."""
 
     def __init__(self, n_estimators=100, max_depth=5, n_feats=3) -> None:
         super().__init__()
@@ -26,7 +26,7 @@ class PermutationImportance(BaseFeatureSelector):
 
 
 class Impurity(BaseFeatureSelector):
-    """Boruta based feature selector."""
+    """Impurity based feature selector."""
 
     def __init__(self, n_estimators=100, max_depth=5, n_feats=3) -> None:
         super().__init__()
