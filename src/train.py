@@ -98,7 +98,7 @@ def cv(X, y, experiment_config, k_folds):
         model = experiment_config.classifier(**experiment_config.classifier_config)
         feature_selector = experiment_config.feature_selector
 
-        if feature_selector is not None:
+        if feature_selector:
             feature_selector = feature_selector(
                 **experiment_config.feature_selector_config
             )
@@ -107,7 +107,8 @@ def cv(X, y, experiment_config, k_folds):
             X_train = feature_selector.transform(X_train)
             X_test = feature_selector.transform(X_test)
 
+            indices.append(feature_selector.get_support(indices=True))
+
         scores.append(calculate_score(model, X_train, X_test, y_train, y_test))
-        indices.append(feature_selector.get_support(indices=True))
 
     return scores, indices
