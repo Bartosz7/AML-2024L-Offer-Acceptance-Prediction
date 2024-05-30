@@ -99,14 +99,11 @@ def cv(X, y, experiment_config, k_folds):
         model = experiment_config.classifier(**experiment_config.classifier_config)
         feature_selector = experiment_config.feature_selector
 
-        if feature_selector is not None:
-            feature_selector = feature_selector(
-                **experiment_config.feature_selector_config
-            )
+        feature_selector = feature_selector(**experiment_config.feature_selector_config)
 
-            feature_selector.fit(X_train, y_train)
-            X_train = feature_selector.transform(X_train)
-            X_test = feature_selector.transform(X_test)
+        feature_selector.fit(X_train, y_train)
+        X_train = feature_selector.transform(X_train)
+        X_test = feature_selector.transform(X_test)
 
         n_feats = X_train.shape[1]
 
