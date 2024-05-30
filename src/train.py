@@ -1,7 +1,7 @@
 """Module for training utils including ."""
 
 import random
-
+from sklearn.model_selection import StratifiedKFold
 import numpy as np
 
 from src.settings import SEED
@@ -84,7 +84,9 @@ def cv(X, y, experiment_config, k_folds):
     Returns:
         scores: List of scores from custom metric for each cross-validation split
     """
-    fold_indices = prepare_cv_indices(n_observations=X.shape[0], k_folds=k_folds)
+    # fold_indices = prepare_cv_indices(n_observations=X.shape[0], k_folds=k_folds)
+    skf = StratifiedKFold(n_splits=5, shuffle=True)
+    fold_indices = skf.split(X, y)
 
     scores = []
     indices = []
