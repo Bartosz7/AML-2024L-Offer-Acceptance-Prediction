@@ -1,5 +1,12 @@
 # AML-2024L-Offer-Acceptance-Prediction
 
+---
+**NOTE**
+
+In our codebase we are indexing the variables from 0.
+
+---
+
 ### Evaluation
 The effectiveness of the prediction is assessed as follows:
 - For each designated customer who actually took advantage of the offer, the company will pay you $€10$.
