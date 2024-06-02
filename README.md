@@ -60,6 +60,7 @@ experiment_config = [
 scores, indices = perform_experiments(X, y, experiment_config)
 ```
 **Example Output**
+```
 Experiment exp_svc_mfs_287d81 in progress...
 Using 29 features, we properly classified 115/200 clients.
 Using 29 features, we properly classified 100/200 clients.
@@ -67,3 +68,4 @@ Using 29 features, we properly classified 115/200 clients.
 Using 29 features, we properly classified 112/200 clients.
 Using 29 features, we properly classified 116/200 clients.
 {'exp_svc_mfs_287d81': -220}
+```
