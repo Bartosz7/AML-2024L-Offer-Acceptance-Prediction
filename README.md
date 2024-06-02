@@ -3,7 +3,7 @@
 ---
 **NOTE**
 
-In our codebase we are indexing the variables from 0.
+In our codebase we are indexing the variables from 0. However in the project report and final predictions submission file (`313547_vars.txt`) the numeration starts from 1. 
 
 ---
 
